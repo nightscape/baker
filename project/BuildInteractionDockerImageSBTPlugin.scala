@@ -51,6 +51,7 @@ object BuildInteractionDockerImageSBTPlugin extends sbt.AutoPlugin {
         Project.extract(state).appendWithSession(Seq(
           libraryDependencies ++= moduleID.toSeq,
           packageName in Docker := s"interaction-${entryPointClassName.toLowerCase()}",
+          version in ThisBuild := moduleID.map(_.revision).getOrElse((version in ThisBuild).value),
           javaOptions in Universal += entryPointClassName,
           livenessProbe in kube := NoProbe,
           sourceGenerators in Compile += Def.task {
